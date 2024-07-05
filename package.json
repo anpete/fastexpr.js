@@ -1,6 +1,6 @@
 {
   "name": "fastexpr.js",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A blazingly fast expression parser for JavaScript",
   "type": "module",
   "main": "dist/parser.js",
