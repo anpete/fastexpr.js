@@ -1,3 +1,6 @@
+/**
+ * Token types.
+ */
 export enum TokenType {
   And,
   AndAnd,
@@ -69,6 +72,9 @@ export enum TokenType {
   Eof,
 }
 
+/**
+ * A token instance.
+ */
 export type Token = {
   type: TokenType;
   value?: string | number | RegExp | bigint | undefined;
@@ -212,6 +218,10 @@ const Tokens = {
   Eof: { type: TokenType.Eof },
 };
 
+/**
+ * Get the name of a token.
+ * @param token The token.
+ */
 export function nameof(token: TokenType): string {
   return TokenNames[token]!;
 }
@@ -333,6 +343,10 @@ function keyword(id: string) {
   }
 }
 
+/**
+ * Generate tokens from an expression.
+ * @param expr The expression to tokenize.
+ */
 export function lex(expr: string): readonly Readonly<Token>[] {
   if (!expr || expr.trim() === "") {
     throw new Error("Empty expression.");
@@ -988,12 +1002,18 @@ export type baseTypes =
   | bigint
   | unknown;
 
+/**
+ * The base expression type.
+ */
 export interface Expression {
   type: string;
 
   [key: string]: baseTypes | Expression | Array<baseTypes | Expression>;
 }
 
+/**
+ * An arrow function expression.
+ */
 export interface ArrowFunctionExpression extends Expression {
   type: "ArrowFunctionExpression";
   params: readonly Expression[];
@@ -1001,11 +1021,17 @@ export interface ArrowFunctionExpression extends Expression {
   async?: boolean;
 }
 
+/**
+ * An array expression.
+ */
 export interface ArrayExpression extends Expression {
   type: "ArrayExpression";
   elements: readonly Expression[];
 }
 
+/**
+ * A binary expression.
+ */
 export interface BinaryExpression extends Expression {
   type: "BinaryExpression";
   operator: string;
@@ -1013,17 +1039,26 @@ export interface BinaryExpression extends Expression {
   right: Expression;
 }
 
+/**
+ * A call expression.
+ */
 export interface CallExpression extends Expression {
   type: "CallExpression";
   arguments: readonly Expression[];
   callee: Expression;
 }
 
+/**
+ * A comma expression.
+ */
 export interface CommaExpression extends Expression {
   type: "CommaExpression";
   expressions: readonly Expression[];
 }
 
+/**
+ * A conditional expression.
+ */
 export interface ConditionalExpression extends Expression {
   type: "ConditionalExpression";
   test: Expression;
@@ -1031,17 +1066,26 @@ export interface ConditionalExpression extends Expression {
   alternate: Expression;
 }
 
+/**
+ * An identifier expression.
+ */
 export interface IdentifierExpression extends Expression {
   type: "IdentifierExpression";
   name: string;
 }
 
+/**
+ * A literal expression.
+ */
 export interface LiteralExpression extends Expression {
   type: "LiteralExpression";
   value: boolean | number | string | RegExp | null | undefined | bigint;
   raw: string;
 }
 
+/**
+ * A member expression.
+ */
 export interface MemberExpression extends Expression {
   type: "MemberExpression";
   computed: boolean;
@@ -1050,17 +1094,26 @@ export interface MemberExpression extends Expression {
   optional?: boolean;
 }
 
+/**
+ * A new expression.
+ */
 export interface NewExpression extends Expression {
   type: "NewExpression";
   arguments: readonly Expression[];
   callee: Expression;
 }
 
+/**
+ * An object expression.
+ */
 export interface ObjectExpression extends Expression {
   type: "ObjectExpression";
   properties: (PropertyExpression | SpreadExpression)[];
 }
 
+/**
+ * A property expression.
+ */
 export interface PropertyExpression extends Expression {
   type: "PropertyExpression";
   computed: boolean;
@@ -1069,37 +1122,58 @@ export interface PropertyExpression extends Expression {
   value?: Expression;
 }
 
+/**
+ * A spread expression.
+ */
 export interface SpreadExpression extends Expression {
   type: "SpreadExpression";
   argument: Expression;
 }
 
+/**
+ * A tagged template expression.
+ */
 export interface TaggedTemplateExpression extends Expression {
   type: "TaggedTemplateExpression";
   readonly tag: Expression;
   readonly quasi: TemplateLiteralExpression;
 }
 
+/**
+ * A template literal expression.
+ */
 export interface TemplateLiteralExpression extends Expression {
   type: "TemplateLiteralExpression";
   quasis: readonly TemplateExpression[];
   expressions: readonly Expression[];
 }
 
+/**
+ * A template expression.
+ */
 export interface TemplateExpression extends Expression {
   type: "TemplateExpression";
   value: { cooked: string; raw?: string };
   tail: boolean;
 }
 
+/**
+ * A 'this' expression.
+ */
 export interface ThisExpression extends Expression {
   type: "ThisExpression";
 }
 
+/**
+ * A 'super' expression.
+ */
 export interface SuperExpression extends Expression {
   type: "SuperExpression";
 }
 
+/**
+ * A unary expression.
+ */
 export interface UnaryExpression extends Expression {
   type: "UnaryExpression";
   operator: string;
@@ -1107,6 +1181,11 @@ export interface UnaryExpression extends Expression {
   prefix: boolean;
 }
 
+/**
+ * Parse an expression.
+ * @param expression The expression to parse.
+ * @returns An AST of the expression.
+ */
 export function parse(expression: string): Expression {
   return new Parser(expression).parse();
 }
@@ -1166,6 +1245,14 @@ class Parser {
 
   constructor(expression: string) {
     this.#tokens = lex(expression);
+  }
+
+  get #cur() {
+    return this.#tokens[this.#pos]!;
+  }
+
+  get #la() {
+    return this.#tokens[this.#pos + 1];
   }
 
   parse() {
@@ -1542,13 +1629,5 @@ class Parser {
 
   #next() {
     return this.#tokens[this.#pos++]!;
-  }
-
-  get #cur() {
-    return this.#tokens[this.#pos]!;
-  }
-
-  get #la() {
-    return this.#tokens[this.#pos + 1];
   }
 }
