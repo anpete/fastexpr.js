@@ -213,7 +213,7 @@ const Tokens = {
 };
 
 export function nameof(token: TokenType): string {
-  return TokenNames[token];
+  return TokenNames[token]!;
 }
 
 function ws(cp: number) {
