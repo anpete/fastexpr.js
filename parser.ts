@@ -212,7 +212,7 @@ const Tokens = {
   Eof: { type: TokenType.Eof },
 };
 
-export function nameof(token: TokenType) {
+export function nameof(token: TokenType): string {
   return TokenNames[token];
 }
 

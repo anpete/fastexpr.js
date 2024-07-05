@@ -1,0 +1,5 @@
+{
+  "name": "@anpete/fastexpr",
+  "version": "0.1.0",
+  "exports": "./parser.ts"
+}
