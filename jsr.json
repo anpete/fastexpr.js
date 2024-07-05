@@ -1,6 +1,6 @@
 {
   "name": "@anpete/fastexpr",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "exports": "./parser.ts",
   "publish": {
     "include": [

@@ -991,7 +991,7 @@ function based(
   return [parseInt(value, base), i] as const;
 }
 
-export type baseTypes =
+type baseTypes =
   | string
   | number
   | boolean
