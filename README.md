@@ -13,7 +13,7 @@ Usage:
 ```typescript
 import {parse} from '@anpete/fastexpr';
 
-const expr = (s: string) => `hello from ${s}!`;
+const expr = (s) => `hello from ${s}!`;
 
 const ast = parse(expr.toString());
 

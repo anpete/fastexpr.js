@@ -877,22 +877,6 @@ function lexNumber(cp: number, expr: string, i: number, seenDot = false) {
         return lexOctal("", expr, i + 1);
       }
     }
-
-    if ((cp === 0x2d || cp === 0x2b) && cp1 === 0x30) {
-      const cp2 = expr.charCodeAt(i + 2);
-
-      if (cp2 === 0x78 || cp2 === 0x58) {
-        return lexHex(value, expr, i + 2);
-      }
-
-      if (cp2 === 0x62 || cp2 === 0x42) {
-        return lexOctal(value, expr, i + 2);
-      }
-
-      if (cp2 === 0x6f || cp2 === 0x4f) {
-        return lexBinary(value, expr, i + 2);
-      }
-    }
   }
 
   let seenE = false;
